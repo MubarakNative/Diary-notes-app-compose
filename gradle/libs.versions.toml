@@ -5,6 +5,7 @@ kotlin = "1.9.23"
 kspVersion = "1.9.23-1.0.19"
 daggerHiltVersion = "2.50"
 daggerVersion = "2.50"
+navigationComposeVersion = "2.7.7"
 preferenceKtx = "1.2.1"
 coreKtx = "1.13.1"
 coreSplashscreen = "1.1.0-rc01"
@@ -51,6 +52,7 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanaryAndroid" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationComposeVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
