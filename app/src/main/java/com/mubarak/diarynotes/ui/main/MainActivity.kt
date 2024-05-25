@@ -1,4 +1,4 @@
-package com.mubarak.diarynotes
+package com.mubarak.diarynotes.ui.main
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
@@ -6,25 +6,19 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.automirrored.outlined.List
-import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Archive
-import androidx.compose.material.icons.filled.Build
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.AddCircle
 import androidx.compose.material.icons.outlined.Archive
-import androidx.compose.material.icons.outlined.Build
 import androidx.compose.material.icons.outlined.Menu
-import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -45,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.mubarak.diarynotes.R
 import com.mubarak.diarynotes.ui.theme.DiaryTheme
 import kotlinx.coroutines.launch
 
@@ -124,13 +119,15 @@ fun DiaryNavDrawer(modifier: Modifier = Modifier) {
                         drawerState.open()
                     }
                 })
+            },
+            floatingActionButton = {
+                DiaryFab()
             }
         ) {
-           // TODO Implemented the content
+            // TODO Implement the content
         }
     }
 }
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -162,6 +159,18 @@ fun DiaryTopAppBar(
             }
         }
     )
+}
+
+@Composable
+fun DiaryFab(modifier: Modifier = Modifier) {
+    FloatingActionButton(onClick = {
+        // TODO: Navigate to Add/Edit Screen
+    }) {
+        Icon(
+            imageVector = Icons.Default.Add,
+            contentDescription = stringResource(id = R.string.createNote)
+        )
+    }
 }
 
 @Preview(uiMode = UI_MODE_NIGHT_YES)
