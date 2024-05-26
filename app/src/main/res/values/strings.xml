@@ -3,4 +3,5 @@
     <string name="createNote">Create note</string>
     <string name="nav_back">Navigate back</string>
     <string name="trash">Trash</string>
+    <string name="search_note">Search note</string>
 </resources>

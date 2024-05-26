@@ -47,7 +47,7 @@ fun DiaryNoteFields(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            label = {
+            placeholder = {
                 Text(text = "Title")
             },
         )
@@ -58,7 +58,7 @@ fun DiaryNoteFields(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            label = {
+            placeholder = {
                 Text(text = "Description")
             },
         )
