@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Diary</string>
     <string name="createNote">Create note</string>
+    <string name="nav_back">Navigate back</string>
 </resources>
