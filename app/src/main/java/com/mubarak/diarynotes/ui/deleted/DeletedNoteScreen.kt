@@ -1,4 +1,4 @@
-package com.mubarak.diarynotes.ui.archive
+package com.mubarak.diarynotes.ui.deleted
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,16 +13,18 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.mubarak.diarynotes.R
 import com.mubarak.diarynotes.ui.note.DiaryNoteItem
 import com.mubarak.diarynotes.ui.theme.DiaryTheme
 
 @Composable
-fun ArchiveScreen(modifier: Modifier = Modifier) {
+fun DeletedNoteScreen(modifier: Modifier = Modifier) {
 
     DiaryTheme {
         Scaffold(modifier = modifier, topBar = {
-            AddEditTopAppBar()
+            DeletedNoteTopAppBar()
         }) {
             LazyDiaryNoteItems(
                 modifier = Modifier.padding(it),
@@ -37,6 +39,7 @@ data class NoteItem(
     val description: String
 )
 
+// TODO: replace with actual data
 val noteItems = listOf(
     NoteItem(
         title = "Title 1",
@@ -72,9 +75,9 @@ fun LazyDiaryNoteItems(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEditTopAppBar(modifier: Modifier = Modifier) {
+fun DeletedNoteTopAppBar(modifier: Modifier = Modifier) {
     TopAppBar(title = {
-        Text(text = "Archive")
+        Text(text = stringResource(id = R.string.trash))
     }, modifier = modifier, navigationIcon = {
 
         IconButton(onClick = { /*TODO Open nav drawer*/ }) {
@@ -90,6 +93,6 @@ fun AddEditTopAppBar(modifier: Modifier = Modifier) {
 @Composable
 private fun AddEditScreenPreview() {
     DiaryTheme {
-        ArchiveScreen()
+        DeletedNoteScreen()
     }
 }
