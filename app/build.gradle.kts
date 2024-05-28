@@ -66,7 +66,6 @@ dependencies {
     // Compose Navigation
     implementation(libs.navigation.compose)
 
-
     // Hilt (Dependency Injection)
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)

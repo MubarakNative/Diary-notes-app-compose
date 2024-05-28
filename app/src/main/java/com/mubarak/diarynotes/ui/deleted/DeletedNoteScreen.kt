@@ -20,11 +20,16 @@ import com.mubarak.diarynotes.ui.note.DiaryNoteItem
 import com.mubarak.diarynotes.ui.theme.DiaryTheme
 
 @Composable
-fun DeletedNoteScreen(modifier: Modifier = Modifier) {
+fun DeletedNoteScreen(
+    modifier: Modifier = Modifier,
+    onMenuClick: () -> Unit
+) {
 
     DiaryTheme {
-        Scaffold(modifier = modifier, topBar = {
-            DeletedNoteTopAppBar()
+        Scaffold(modifier, {
+            DeletedNoteTopAppBar {
+                onMenuClick()
+            }
         }) {
             LazyDiaryNoteItems(
                 modifier = Modifier.padding(it),
@@ -39,7 +44,7 @@ data class NoteItem(
     val description: String
 )
 
-// TODO: replace with actual data
+// TODO replace it with real room database
 val noteItems = listOf(
     NoteItem(
         title = "Title 1",
@@ -69,18 +74,17 @@ fun LazyDiaryNoteItems(
             DiaryNoteItem(title = it.title, description = it.description)
         }
     }
-
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DeletedNoteTopAppBar(modifier: Modifier = Modifier) {
+fun DeletedNoteTopAppBar(modifier: Modifier = Modifier, onMenuClick: () -> Unit) {
     TopAppBar(title = {
         Text(text = stringResource(id = R.string.trash))
     }, modifier = modifier, navigationIcon = {
 
-        IconButton(onClick = { /*TODO Open nav drawer*/ }) {
+        IconButton(onClick = onMenuClick) {
             Icon(
                 imageVector = Icons.Default.Menu,
                 contentDescription = null
@@ -93,6 +97,6 @@ fun DeletedNoteTopAppBar(modifier: Modifier = Modifier) {
 @Composable
 private fun AddEditScreenPreview() {
     DiaryTheme {
-        DeletedNoteScreen()
+        DeletedNoteScreen {}
     }
 }

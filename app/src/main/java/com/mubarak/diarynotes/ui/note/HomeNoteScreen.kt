@@ -1,123 +1,78 @@
 package com.mubarak.diarynotes.ui.note
 
-import android.annotation.SuppressLint
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Archive
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.Archive
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.mubarak.diarynotes.R
+import com.mubarak.diarynotes.ui.archive.NoteItem
+import com.mubarak.diarynotes.ui.archive.fakeNoteItem
 import com.mubarak.diarynotes.ui.theme.DiaryTheme
-import kotlinx.coroutines.launch
 
-data class DiaryTopLevelDestination(
-    val selectedIcon: ImageVector, val unselectedIcon: ImageVector, val title: String
-)
-
-val TOP_LEVEL_DESTINATIONS = listOf(
-    DiaryTopLevelDestination(
-        selectedIcon = Icons.AutoMirrored.Filled.List,
-        unselectedIcon = Icons.AutoMirrored.Outlined.List,
-        title = "Notes"
-    ),
-    DiaryTopLevelDestination(
-        selectedIcon = Icons.Filled.Archive,
-        unselectedIcon = Icons.Outlined.Archive,
-        title = "Archive"
-    ),
-    DiaryTopLevelDestination(
-        selectedIcon = Icons.Filled.Settings,
-        unselectedIcon = Icons.Outlined.Settings,
-        title = "Settings"
-    )
-)
-
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun DiaryNavDrawer(modifier: Modifier = Modifier) {
-    var selected by rememberSaveable { mutableIntStateOf(0) }
-    val scope = rememberCoroutineScope()
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-
-    ModalNavigationDrawer(
-        drawerContent = {
-            ModalDrawerSheet {
-                // replace it with the compose navigation implementation
-                TOP_LEVEL_DESTINATIONS.forEachIndexed { index, item ->
-                    NavigationDrawerItem(
-                        label = { Text(text = item.title) },
-                        selected = selected == index,
-                        onClick = {
-                            selected = index
-                            scope.launch {
-                                drawerState.close()
-                            }
-                        },
-                        icon = {
-                            Icon(
-                                imageVector = if (index == selected) {
-                                    item.selectedIcon
-                                } else item.unselectedIcon,
-                                contentDescription = null
-                            )
-                        }
-                    )
-                }
-            }
+fun DiaryHomeScreen(
+    modifier: Modifier = Modifier,
+    onDrawer: () -> Unit,
+    onSearchActionClick: () -> Unit = {},
+    onFabClick: () -> Unit,
+) {
+    Scaffold(
+        topBar = {
+            DiaryTopAppBar(
+                modifier = modifier,
+                onMenuClick = onDrawer,
+                searchActionClick = onSearchActionClick
+            )
         },
-        drawerState = drawerState
-    ) {
-        Scaffold(
-            topBar = {
-                DiaryTopAppBar(onClick = {
-                    scope.launch {
-                        drawerState.open()
-                    }
-                })
-            },
-            floatingActionButton = {
-                DiaryFab()
-            }
-        ) {
-            // TODO Implement the content
+        floatingActionButton = {
+            DiaryFab(onFabClick = {
+                onFabClick()
+            })
         }
+    ) {
+        LazyDiaryNoteItems(noteItems = fakeNoteItem, modifier = Modifier.padding(it))
     }
 }
 
+@Composable
+fun LazyDiaryNoteItems(
+    modifier: Modifier = Modifier,
+    noteItems: List<NoteItem>
+) {
+    LazyColumn(
+        modifier = modifier
+    ) {
+        items(
+            noteItems
+        ) {
+            DiaryNoteItem(title = it.title, description = it.description)
+        }
+    }
+
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DiaryTopAppBar(
-    modifier: Modifier = Modifier, onClick: () -> Unit
+    modifier: Modifier = Modifier,
+    onMenuClick: () -> Unit,
+    searchActionClick: () -> Unit = {}
 ) {
     TopAppBar(
         title = {
@@ -127,7 +82,7 @@ fun DiaryTopAppBar(
             )
         },
         navigationIcon = {
-            IconButton(onClick = onClick) {
+            IconButton(onClick = onMenuClick) {
                 Icon(
                     imageVector = Icons.Outlined.Menu,
                     contentDescription = null
@@ -135,7 +90,7 @@ fun DiaryTopAppBar(
             }
         },
         actions = {
-            IconButton(onClick = { /*TODO Go to search screen*/ }) {
+            IconButton(onClick = searchActionClick) {
                 Icon(
                     imageVector = Icons.Outlined.Search,
                     contentDescription = null
@@ -146,9 +101,12 @@ fun DiaryTopAppBar(
 }
 
 @Composable
-fun DiaryFab(modifier: Modifier = Modifier) {
+fun DiaryFab(
+    modifier: Modifier = Modifier,
+    onFabClick: () -> Unit
+) {
     FloatingActionButton(onClick = {
-        // TODO: Navigate to Add/Edit Screen
+        onFabClick()
     }) {
         Icon(
             imageVector = Icons.Default.Add,
@@ -157,11 +115,12 @@ fun DiaryFab(modifier: Modifier = Modifier) {
     }
 }
 
+
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun DiaryAppPreview() {
     DiaryTheme {
-        DiaryTopAppBar {}
+        LazyDiaryNoteItems(noteItems = fakeNoteItem)
     }
 }
 
@@ -169,6 +128,6 @@ fun DiaryAppPreview() {
 @Composable
 fun DiaryNavDrawerPreview() {
     DiaryTheme {
-        DiaryNavDrawer()
+        DiaryHomeScreen(onDrawer = {}, onSearchActionClick = {}, onFabClick = {})
     }
 }
