@@ -18,15 +18,17 @@ import com.mubarak.diarynotes.ui.note.DiaryNoteItem
 import com.mubarak.diarynotes.ui.theme.DiaryTheme
 
 @Composable
-fun ArchiveScreen(modifier: Modifier = Modifier) {
+fun ArchiveScreen(modifier: Modifier = Modifier, onMenuClick: () -> Unit) {
 
     DiaryTheme {
         Scaffold(modifier = modifier, topBar = {
-            AddEditTopAppBar()
+            AddEditTopAppBar {
+                onMenuClick()
+            }
         }) {
             LazyDiaryNoteItems(
                 modifier = Modifier.padding(it),
-                noteItems = noteItems
+                noteItems = fakeNoteItem
             )
         }
     }
@@ -37,7 +39,8 @@ data class NoteItem(
     val description: String
 )
 
-val noteItems = listOf(
+// TODO replace it with real room database
+val fakeNoteItem = listOf(
     NoteItem(
         title = "Title 1",
         description = "Description 1"
@@ -72,12 +75,12 @@ fun LazyDiaryNoteItems(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEditTopAppBar(modifier: Modifier = Modifier) {
+fun AddEditTopAppBar(modifier: Modifier = Modifier, onMenuClick: () -> Unit) {
     TopAppBar(title = {
         Text(text = "Archive")
     }, modifier = modifier, navigationIcon = {
 
-        IconButton(onClick = { /*TODO Open nav drawer*/ }) {
+        IconButton(onClick = onMenuClick) {
             Icon(
                 imageVector = Icons.Default.Menu,
                 contentDescription = null
@@ -90,6 +93,6 @@ fun AddEditTopAppBar(modifier: Modifier = Modifier) {
 @Composable
 private fun AddEditScreenPreview() {
     DiaryTheme {
-        ArchiveScreen()
+        ArchiveScreen {}
     }
 }

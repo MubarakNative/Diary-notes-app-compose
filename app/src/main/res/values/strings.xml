@@ -4,4 +4,11 @@
     <string name="nav_back">Navigate back</string>
     <string name="trash">Trash</string>
     <string name="search_note">Search note</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="search_your_note">Search your note</string>
+    <string name="notes">Notes</string>
+    <string name="archive">Archive</string>
+    <string name="deleted">Deleted</string>
+    <string name="diary">Diary</string>
 </resources>

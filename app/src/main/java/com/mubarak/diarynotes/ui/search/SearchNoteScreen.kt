@@ -2,13 +2,19 @@ package com.mubarak.diarynotes.ui.search
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,10 +25,12 @@ import com.mubarak.diarynotes.ui.deleted.noteItems
 import com.mubarak.diarynotes.ui.theme.DiaryTheme
 
 @Composable
-fun SearchNoteScreen(modifier: Modifier = Modifier) {
+fun SearchNoteScreen(modifier: Modifier = Modifier, onUpButtonClick: () -> Unit = {}) {
     DiaryTheme {
         Scaffold(modifier = modifier, topBar = {
-            SearchNoteTopAppBar(modifier =modifier)
+            SearchNoteTopAppBar(modifier = modifier, onUpButtonClick = {
+                onUpButtonClick()
+            })
         }) {
             LazyDiaryNoteItems(
                 modifier = Modifier.padding(it),
@@ -35,21 +43,38 @@ fun SearchNoteScreen(modifier: Modifier = Modifier) {
 @Composable
 fun SearchNoteTopAppBar(
     modifier: Modifier = Modifier,
-    onValueChange: (String) -> Unit = {}
+    onValueChange: (String) -> Unit = {},
+    onUpButtonClick: () -> Unit = {}
 ) {
-    OutlinedTextField(
-        modifier = modifier.fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        value = "",
-        onValueChange = onValueChange,
+    var query by remember {
+        mutableStateOf("")
+    }
+
+    TextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .statusBarsPadding()
+            .padding(16.dp),
+        value = query,
+        onValueChange = {
+            onValueChange(it)
+            query = it
+        },
         leadingIcon = {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = stringResource(id = R.string.search_note)
-            )
+            IconButton(onClick = {
+                onUpButtonClick()
+            }) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = null
+                )
+            }
+
         },
         placeholder = {
-            Text(text = "Search your note")
+            Text(
+                text = stringResource(R.string.search_your_note)
+            )
         }
     )
 }

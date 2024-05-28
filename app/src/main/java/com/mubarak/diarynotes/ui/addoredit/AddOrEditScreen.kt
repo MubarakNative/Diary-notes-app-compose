@@ -13,6 +13,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,11 +25,14 @@ import com.mubarak.diarynotes.R
 import com.mubarak.diarynotes.ui.theme.DiaryTheme
 
 @Composable
-fun AddEditScreen(modifier: Modifier = Modifier) {
+fun AddEditScreen(
+    modifier: Modifier = Modifier,
+    onUpButtonClick: () -> Unit = {}
+) {
 
     DiaryTheme {
         Scaffold(modifier = modifier, topBar = {
-            AddEditTopAppBar()
+            AddEditTopAppBar(onUpButtonClick = onUpButtonClick)
         }) {
             DiaryNoteFields(modifier = Modifier.padding(it))
         }
@@ -35,31 +42,41 @@ fun AddEditScreen(modifier: Modifier = Modifier) {
 @Composable
 fun DiaryNoteFields(
     modifier: Modifier = Modifier,
-    title: String = "",
     onTitleChange: (String) -> Unit = {},
-    description: String = "",
     onDescriptionChange: (String) -> Unit = {}
 ) {
+    var title by remember {
+        mutableStateOf("")
+    }
+    var description by remember {
+        mutableStateOf("")
+    }
     Column(modifier = modifier) {
         TextField(
             value = title,
-            onValueChange = onTitleChange,
+            onValueChange = {
+                onTitleChange(it)
+                title = it
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
             placeholder = {
-                Text(text = "Title")
+                Text(text = stringResource(id = R.string.title))
             },
         )
 
         TextField(
             value = description,
-            onValueChange = onDescriptionChange,
+            onValueChange = {
+                onDescriptionChange(it)
+                description = it
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             placeholder = {
-                Text(text = "Description")
+                Text(text = stringResource(R.string.description))
             },
         )
     }
@@ -67,13 +84,16 @@ fun DiaryNoteFields(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEditTopAppBar(modifier: Modifier = Modifier) {
+fun AddEditTopAppBar(
+    modifier: Modifier = Modifier,
+    onUpButtonClick: () -> Unit = {}
+) {
     TopAppBar(title = {
 
     }, modifier = modifier, navigationIcon = {
-
-        IconButton(onClick = { /*TODO: NavController.POPBACKSTACK*/ }) {
-
+        IconButton(onClick = {
+            onUpButtonClick()
+        }) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = stringResource(id = R.string.nav_back)
