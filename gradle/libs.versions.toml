@@ -5,7 +5,8 @@ kotlin = "1.9.23"
 kspVersion = "1.9.23-1.0.19"
 daggerHiltVersion = "2.50"
 daggerVersion = "2.50"
-navigationComposeVersion = "2.7.7"
+serializationVersion = "1.6.3"
+navigationComposeVersion = "2.8.0-beta02"
 preferenceKtx = "1.2.1"
 coreKtx = "1.13.1"
 coreSplashscreen = "1.1.0-rc01"
@@ -13,11 +14,12 @@ coroutineVersion = "1.8.0"
 kotlinxCoroutinesTest = "1.8.0"
 junit = "4.13.2"
 leakcanaryAndroid = "2.13"
-lifecycleViewmodelKtx = "2.8.0"
+lifecycleViewmodelKtx = "2.8.1"
 roomVersion = "2.6.1"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
-lifecycleRuntimeKtx = "2.8.0"
+lifecycleRuntimeKtx = "2.8.1"
+viewModelVersion = "2.8.1"
 activityCompose = "1.9.0"
 composeBom = "2024.05.00"
 
@@ -37,6 +39,7 @@ androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "daggerVersion" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "daggerVersion" }
+androidx-lifecycle-viewmodel-ktx-v280 = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preferenceKtx" }
@@ -53,10 +56,13 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanaryAndroid" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationComposeVersion" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serializationVersion" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlinSymbolProcessing ={ id = "com.google.devtools.ksp",  version.ref = "kspVersion"}
 daggerHilt = { id = "com.google.dagger.hilt.android", version.ref = "daggerHiltVersion"}
 

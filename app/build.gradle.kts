@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlinSymbolProcessing)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.daggerHilt)
 }
 
@@ -66,6 +67,9 @@ dependencies {
     // Compose Navigation
     implementation(libs.navigation.compose)
 
+    // Kotlinx-Serialization
+    implementation(libs.kotlinx.serialization.json)
+
     // Hilt (Dependency Injection)
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
@@ -78,6 +82,9 @@ dependencies {
     // ViewModel
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+    // Kotlin KTX
+    implementation (libs.androidx.lifecycle.viewmodel.ktx.v280)
 
     // DataStore
     implementation(libs.androidx.datastore.preferences)
