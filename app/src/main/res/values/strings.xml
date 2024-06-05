@@ -11,4 +11,5 @@
     <string name="archive">Archive</string>
     <string name="deleted">Deleted</string>
     <string name="diary">Diary</string>
+    <string name="save">Save note</string>
 </resources>
