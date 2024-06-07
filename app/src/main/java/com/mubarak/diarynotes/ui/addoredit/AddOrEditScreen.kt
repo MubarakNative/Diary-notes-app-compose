@@ -12,6 +12,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,6 +55,10 @@ fun DiaryNoteFields(
         mutableStateOf("")
     }
     Column(modifier = modifier) {
+        val textFieldColour = TextFieldDefaults.colors(
+            unfocusedContainerColor = Color.Transparent,
+            focusedContainerColor = Color.Transparent,
+        )
         TextField(
             value = title,
             onValueChange = {
@@ -65,6 +71,7 @@ fun DiaryNoteFields(
             placeholder = {
                 Text(text = stringResource(id = R.string.title))
             },
+            colors = textFieldColour
         )
 
         TextField(
@@ -79,6 +86,7 @@ fun DiaryNoteFields(
             placeholder = {
                 Text(text = stringResource(R.string.description))
             },
+            colors = textFieldColour
         )
     }
 }
