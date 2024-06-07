@@ -66,6 +66,10 @@ dependencies {
 
     // Compose Navigation
     implementation(libs.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
+
+    // Lifecycle compose
+    implementation(libs.androidx.lifecycle.runtime.compose)
 
     // Kotlinx-Serialization
     implementation(libs.kotlinx.serialization.json)
