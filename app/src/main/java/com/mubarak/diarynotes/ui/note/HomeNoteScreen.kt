@@ -20,8 +20,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mubarak.diarynotes.R
-import com.mubarak.diarynotes.ui.archive.NoteItem
+import com.mubarak.diarynotes.data.sources.local.model.Note
 import com.mubarak.diarynotes.ui.archive.fakeNoteItem
 import com.mubarak.diarynotes.ui.theme.DiaryTheme
 
@@ -31,6 +33,7 @@ fun DiaryHomeScreen(
     onDrawer: () -> Unit,
     onSearchActionClick: () -> Unit = {},
     onFabClick: () -> Unit,
+    viewModel: HomeNoteViewModel = hiltViewModel()
 ) {
     Scaffold(
         topBar = {
@@ -53,7 +56,7 @@ fun DiaryHomeScreen(
 @Composable
 fun LazyDiaryNoteItems(
     modifier: Modifier = Modifier,
-    noteItems: List<NoteItem>
+    noteItems: List<Note>
 ) {
     LazyColumn(
         modifier = modifier
@@ -61,7 +64,7 @@ fun LazyDiaryNoteItems(
         items(
             noteItems
         ) {
-            DiaryNoteItem(title = it.title, description = it.description)
+            DiaryNoteItem(note = it)
         }
     }
 
@@ -128,6 +131,9 @@ fun DiaryAppPreview() {
 @Composable
 fun DiaryNavDrawerPreview() {
     DiaryTheme {
-        DiaryHomeScreen(onDrawer = {}, onSearchActionClick = {}, onFabClick = {})
+        DiaryHomeScreen(onDrawer = {},
+            onSearchActionClick = {},
+            onFabClick = {}
+        )
     }
 }

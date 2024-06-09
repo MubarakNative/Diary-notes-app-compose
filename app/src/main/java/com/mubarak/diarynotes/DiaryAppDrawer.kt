@@ -16,15 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mubarak.diarynotes.DiaryDestination.ARCHIVE_ROUTE
-import com.mubarak.diarynotes.DiaryDestination.DELETED_ROUTE
-import com.mubarak.diarynotes.DiaryDestination.NOTES_ROUTE
 import com.mubarak.diarynotes.ui.theme.DiaryTheme
 
 @Composable
 fun DiaryAppDrawer(
     modifier: Modifier = Modifier,
-    currentDestination: String,
+    currentDestination: Any,
     navigateToNotes: () -> Unit,
     navigateToArchive: () -> Unit,
     navigateToDeleted: () -> Unit,
@@ -38,7 +35,7 @@ fun DiaryAppDrawer(
             label = {
                 Text(text = stringResource(R.string.notes))
             },
-            selected = currentDestination == NOTES_ROUTE,
+            selected = currentDestination == DiaryHomeDestination::class.qualifiedName,
             onClick = {
                 navigateToArchive(); closeDrawer()
             },
@@ -53,7 +50,7 @@ fun DiaryAppDrawer(
             label = {
                 Text(text = stringResource(R.string.archive))
             },
-            selected = currentDestination == ARCHIVE_ROUTE,
+            selected = currentDestination == ArchiveDestination::class.qualifiedName,
             onClick = {
                 navigateToNotes(); closeDrawer()
             },
@@ -64,7 +61,7 @@ fun DiaryAppDrawer(
             label = {
                 Text(text = stringResource(R.string.deleted))
             },
-            selected = currentDestination == DELETED_ROUTE,
+            selected = currentDestination == DeletedDestination::class.qualifiedName,
             onClick = { navigateToDeleted(); closeDrawer() },
             icon = { Icon(imageVector = Icons.Default.Delete, contentDescription = null) }
         )
@@ -92,7 +89,7 @@ private fun NavHeaderPreview() {
             navigateToNotes = {},
             navigateToDeleted = {},
             closeDrawer = {},
-            currentDestination = NOTES_ROUTE
+            currentDestination = DiaryHomeDestination.toString()
         )
     }
 }

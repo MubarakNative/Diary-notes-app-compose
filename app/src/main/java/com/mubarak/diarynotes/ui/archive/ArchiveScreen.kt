@@ -18,7 +18,10 @@ import com.mubarak.diarynotes.ui.note.DiaryNoteItem
 import com.mubarak.diarynotes.ui.theme.DiaryTheme
 
 @Composable
-fun ArchiveScreen(modifier: Modifier = Modifier, onMenuClick: () -> Unit) {
+fun ArchiveScreen(
+    modifier: Modifier = Modifier,
+    onMenuClick: () -> Unit
+) {
 
     DiaryTheme {
         Scaffold(modifier = modifier, topBar = {
@@ -41,15 +44,18 @@ data class NoteItem(
 
 // TODO replace it with real room database
 val fakeNoteItem = listOf(
-    NoteItem(
+    com.mubarak.diarynotes.data.sources.local.model.Note(
+        id = 1,
         title = "Title 1",
         description = "Description 1"
     ),
-    NoteItem(
+    com.mubarak.diarynotes.data.sources.local.model.Note(
+        id = 2,
         title = "Title 2",
         description = "Description 2"
     ),
-    NoteItem(
+    com.mubarak.diarynotes.data.sources.local.model.Note(
+        id = 3,
         title = "Title 3",
         description = "Description 3"
     )
@@ -58,7 +64,7 @@ val fakeNoteItem = listOf(
 @Composable
 fun LazyDiaryNoteItems(
     modifier: Modifier = Modifier,
-    noteItems: List<NoteItem>
+    noteItems: List<com.mubarak.diarynotes.data.sources.local.model.Note>
 ) {
     LazyColumn(
         modifier = modifier
@@ -66,7 +72,7 @@ fun LazyDiaryNoteItems(
         items(
             noteItems
         ) {
-            DiaryNoteItem(title = it.title, description = it.description)
+            DiaryNoteItem(note = it)
         }
     }
 
