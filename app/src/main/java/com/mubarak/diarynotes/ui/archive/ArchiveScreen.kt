@@ -14,6 +14,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.mubarak.diarynotes.data.sources.local.model.Note
 import com.mubarak.diarynotes.ui.note.DiaryNoteItem
 import com.mubarak.diarynotes.ui.theme.DiaryTheme
 
@@ -37,25 +38,20 @@ fun ArchiveScreen(
     }
 }
 
-data class NoteItem(
-    val title: String,
-    val description: String
-)
-
 // TODO replace it with real room database
 val fakeNoteItem = listOf(
-    com.mubarak.diarynotes.data.sources.local.model.Note(
-        id = 1,
+    Note(
+        id = "1",
         title = "Title 1",
         description = "Description 1"
     ),
-    com.mubarak.diarynotes.data.sources.local.model.Note(
-        id = 2,
+    Note(
+        id = "2",
         title = "Title 2",
         description = "Description 2"
     ),
-    com.mubarak.diarynotes.data.sources.local.model.Note(
-        id = 3,
+    Note(
+        id = "3",
         title = "Title 3",
         description = "Description 3"
     )
@@ -64,7 +60,7 @@ val fakeNoteItem = listOf(
 @Composable
 fun LazyDiaryNoteItems(
     modifier: Modifier = Modifier,
-    noteItems: List<com.mubarak.diarynotes.data.sources.local.model.Note>
+    noteItems: List<Note>
 ) {
     LazyColumn(
         modifier = modifier

@@ -55,7 +55,7 @@ private fun DiaryNoteItemPreview() {
     DiaryTheme {
         DiaryNoteItem(
           note = Note(
-              1,
+              "1",
               "Title for your note",
               "Description for your note")
         ){}

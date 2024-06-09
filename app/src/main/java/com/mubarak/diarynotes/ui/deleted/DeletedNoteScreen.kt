@@ -48,17 +48,17 @@ data class NoteItem(
 // TODO replace it with real room database
 val noteItems = listOf(
     Note(
-        id = 1,
+        id = "1",
         title = "Title 1",
         description = "Description 1"
     ),
     Note(
-        id = 2,
+        id = "2",
         title = "Title 2",
         description = "Description 2"
     ),
     Note(
-        id = 3,
+        id = "3",
         title = "Title 3",
         description = "Description 3"
     )
