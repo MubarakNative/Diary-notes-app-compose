@@ -6,11 +6,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.mubarak.diarynotes.DiaryDestination.ADD_EDIT_ROUTE
-import com.mubarak.diarynotes.DiaryDestination.ARCHIVE_ROUTE
-import com.mubarak.diarynotes.DiaryDestination.DELETED_ROUTE
-import com.mubarak.diarynotes.DiaryDestination.NOTES_ROUTE
-import com.mubarak.diarynotes.DiaryDestination.SEARCH_ROUTE
 import com.mubarak.diarynotes.ui.addoredit.AddEditScreen
 import com.mubarak.diarynotes.ui.archive.ArchiveScreen
 import com.mubarak.diarynotes.ui.deleted.DeletedNoteScreen
@@ -25,36 +20,36 @@ fun DiaryNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = NOTES_ROUTE
+        startDestination = DiaryHomeDestination
     ) {
-        composable(NOTES_ROUTE) {
+        composable<DiaryHomeDestination> {
             DiaryHomeScreen(
                 modifier = modifier,
                 onDrawer = { onDrawerClicked() },
                 onSearchActionClick = {
-                    navController.navigate(SEARCH_ROUTE)
+                    navController.navigate(SearchDestination)
                 },
                 onFabClick = {
-                    navController.navigate(ADD_EDIT_ROUTE)
+                    navController.navigate(AddEditDestination(1))
                 }
             )
         }
-        composable(ARCHIVE_ROUTE) {
+        composable<ArchiveDestination> {
             ArchiveScreen{
                 onDrawerClicked()
             }
         }
-        composable(DELETED_ROUTE) {
+        composable<DeletedDestination> {
             DeletedNoteScreen{
                 onDrawerClicked()
             }
         }
-        composable(SEARCH_ROUTE){
+        composable<SearchDestination>{
             SearchNoteScreen(modifier = modifier, onUpButtonClick = {
                 navController.navigateUp()
             })
         }
-        composable(ADD_EDIT_ROUTE){
+        composable<AddEditDestination>{
             AddEditScreen(modifier = modifier, onUpButtonClick = {
                 navController.navigateUp()
             })

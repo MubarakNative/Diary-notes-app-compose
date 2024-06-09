@@ -9,9 +9,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.mubarak.diarynotes.DiaryDestination.ARCHIVE_ROUTE
-import com.mubarak.diarynotes.DiaryDestination.DELETED_ROUTE
-import com.mubarak.diarynotes.DiaryDestination.NOTES_ROUTE
 import kotlinx.coroutines.launch
 
 @Composable
@@ -23,14 +20,14 @@ fun DiaryApp() {
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute =
-        navBackStackEntry?.destination?.route ?: NOTES_ROUTE
+        navBackStackEntry?.destination?.route ?: DiaryHomeDestination
 
     ModalNavigationDrawer(
         drawerContent = {
             DiaryAppDrawer(
                 currentDestination = currentRoute,
                 navigateToNotes = {
-                    navController.navigate(ARCHIVE_ROUTE) {
+                    navController.navigate(ArchiveDestination) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
@@ -39,7 +36,7 @@ fun DiaryApp() {
                     }
                 },
                 navigateToArchive = {
-                    navController.navigate(NOTES_ROUTE){
+                    navController.navigate(DiaryHomeDestination){
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
@@ -49,7 +46,7 @@ fun DiaryApp() {
                 },
 
                 navigateToDeleted = {
-                    navController.navigate(DELETED_ROUTE){
+                    navController.navigate(DeletedDestination){
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }

@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.mubarak.diarynotes.R
+import com.mubarak.diarynotes.data.sources.local.model.Note
 import com.mubarak.diarynotes.ui.note.DiaryNoteItem
 import com.mubarak.diarynotes.ui.theme.DiaryTheme
 
@@ -46,15 +47,18 @@ data class NoteItem(
 
 // TODO replace it with real room database
 val noteItems = listOf(
-    NoteItem(
+    Note(
+        id = "1",
         title = "Title 1",
         description = "Description 1"
     ),
-    NoteItem(
+    Note(
+        id = "2",
         title = "Title 2",
         description = "Description 2"
     ),
-    NoteItem(
+    Note(
+        id = "3",
         title = "Title 3",
         description = "Description 3"
     )
@@ -63,7 +67,7 @@ val noteItems = listOf(
 @Composable
 fun LazyDiaryNoteItems(
     modifier: Modifier = Modifier,
-    noteItems: List<NoteItem>
+    noteItems: List<Note>
 ) {
     LazyColumn(
         modifier = modifier
@@ -71,7 +75,7 @@ fun LazyDiaryNoteItems(
         items(
             noteItems
         ) {
-            DiaryNoteItem(title = it.title, description = it.description)
+            DiaryNoteItem(note = it)
         }
     }
 }
