@@ -16,28 +16,37 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mubarak.diarynotes.R
 import com.mubarak.diarynotes.ui.theme.DiaryTheme
 
 @Composable
 fun AddEditScreen(
     modifier: Modifier = Modifier,
-    onUpButtonClick: () -> Unit = {}
+    noteId: String? = null,
+    onUpButtonClick: () -> Unit = {},
+    viewModel: ActionNoteViewModel = hiltViewModel()
 ) {
 
     DiaryTheme {
         Scaffold(modifier = modifier, topBar = {
             AddEditTopAppBar(onUpButtonClick = onUpButtonClick)
         }) {
-            DiaryNoteFields(modifier = Modifier.padding(it))
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            viewModel.setNote(noteId)
+
+            DiaryNoteFields(
+                modifier = Modifier.padding(it),
+                title = uiState.title,
+                description = uiState.description
+            )
         }
     }
 }
@@ -45,15 +54,12 @@ fun AddEditScreen(
 @Composable
 fun DiaryNoteFields(
     modifier: Modifier = Modifier,
+    title: String,
+    description: String,
     onTitleChange: (String) -> Unit = {},
     onDescriptionChange: (String) -> Unit = {}
 ) {
-    var title by remember {
-        mutableStateOf("")
-    }
-    var description by remember {
-        mutableStateOf("")
-    }
+
     Column(modifier = modifier) {
         val textFieldColour = TextFieldDefaults.colors(
             unfocusedContainerColor = Color.Transparent,
@@ -63,7 +69,6 @@ fun DiaryNoteFields(
             value = title,
             onValueChange = {
                 onTitleChange(it)
-                title = it
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -78,7 +83,6 @@ fun DiaryNoteFields(
             value = description,
             onValueChange = {
                 onDescriptionChange(it)
-                description = it
             },
             modifier = Modifier
                 .fillMaxWidth()

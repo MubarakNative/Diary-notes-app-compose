@@ -8,9 +8,9 @@ interface NoteRepository {
     suspend fun upsertNote(note: Note)
      fun getAllNote(): Flow<List<Note>>
     suspend fun deleteNote(note: Note)
-    suspend fun deleteNoteById(noteId:Long)
+    suspend fun deleteNoteById(noteId:String)
     suspend fun deleteAllNotes()
-    fun getNoteStreamById(noteId:Long):Flow<Note>
-    suspend fun getNoteById(noteId:Long):Note
+    fun getNoteStreamById(noteId:String):Flow<Note>
+    suspend fun getNoteById(noteId:String):Note
 
 }
