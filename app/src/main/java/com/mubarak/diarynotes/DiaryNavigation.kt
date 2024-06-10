@@ -12,5 +12,5 @@ object DeletedDestination
 object SearchDestination
 @Serializable
 data class AddEditDestination(
-    val noteId: Int
+    val noteId: String?
 )

@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.mubarak.diarynotes.ui.addoredit.AddEditScreen
 import com.mubarak.diarynotes.ui.archive.ArchiveScreen
 import com.mubarak.diarynotes.ui.deleted.DeletedNoteScreen
@@ -30,29 +31,29 @@ fun DiaryNavGraph(
                     navController.navigate(SearchDestination)
                 },
                 onFabClick = {
-                    navController.navigate(AddEditDestination(1))
+                    navController.navigate(AddEditDestination(null))
                 }
             )
         }
         composable<ArchiveDestination> {
-            ArchiveScreen{
+            ArchiveScreen {
                 onDrawerClicked()
             }
         }
         composable<DeletedDestination> {
-            DeletedNoteScreen{
+            DeletedNoteScreen {
                 onDrawerClicked()
             }
         }
-        composable<SearchDestination>{
+        composable<SearchDestination> {
             SearchNoteScreen(modifier = modifier, onUpButtonClick = {
                 navController.navigateUp()
             })
         }
-        composable<AddEditDestination>{
+        composable<AddEditDestination> { entry ->
             AddEditScreen(modifier = modifier, onUpButtonClick = {
                 navController.navigateUp()
-            })
+            }, noteId = entry.toRoute<AddEditDestination>().noteId)
         }
     }
 }
