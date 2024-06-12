@@ -44,8 +44,8 @@ fun AddEditScreen(
 
             DiaryNoteFields(
                 modifier = Modifier.padding(it),
-                title = uiState.title,
-                description = uiState.description,
+                title = viewModel.title,
+                description = viewModel.description,
                 onTitleChange = viewModel::updateTitle,
                 onDescriptionChange = viewModel::updateDescription
             )
