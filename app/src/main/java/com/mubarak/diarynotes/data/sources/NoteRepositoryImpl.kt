@@ -3,6 +3,7 @@ package com.mubarak.diarynotes.data.sources
 
 import com.mubarak.diarynotes.data.sources.local.NoteDatabase
 import com.mubarak.diarynotes.data.sources.local.model.Note
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -10,13 +11,14 @@ import javax.inject.Inject
 
 /** Concrete implementation of [NoteRepository]*/
 class NoteRepositoryImpl @Inject constructor(
-    private val notesDatabase: NoteDatabase
+    private val notesDatabase: NoteDatabase,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ): NoteRepository {
-    override suspend fun insertNote(note: Note) = withContext(Dispatchers.IO){
+    override suspend fun insertNote(note: Note) = withContext(dispatcher){
         notesDatabase.getDao.insertNote(note)
     }
 
-    override suspend fun upsertNote(note: Note) = withContext(Dispatchers.IO){
+    override suspend fun upsertNote(note: Note) = withContext(dispatcher){
         notesDatabase.getDao.upsertNote(note)
     }
 
@@ -24,11 +26,11 @@ class NoteRepositoryImpl @Inject constructor(
         return notesDatabase.getDao.getAllNotes()
     }
 
-    override suspend fun deleteNote(note: Note) = withContext(Dispatchers.IO){
+    override suspend fun deleteNote(note: Note) = withContext(dispatcher){
         notesDatabase.getDao.deleteNote(note)
     }
 
-    override suspend fun deleteNoteById(noteId: String)  = withContext(Dispatchers.IO) {
+    override suspend fun deleteNoteById(noteId: String)  = withContext(dispatcher) {
         notesDatabase.getDao.deleteNoteById(noteId)
     }
 
@@ -42,7 +44,7 @@ class NoteRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getNoteById(noteId: String):Note{
-        return withContext(Dispatchers.IO){
+        return withContext(dispatcher){
             notesDatabase.getDao.getNoteById(noteId)
         }
     }

@@ -36,7 +36,7 @@ fun AddEditScreen(
 
     DiaryTheme {
         Scaffold(modifier = modifier, topBar = {
-            AddEditTopAppBar(onUpButtonClick = onUpButtonClick)
+            AddEditTopAppBar(onUpButtonClick = onUpButtonClick, onSaveClick = viewModel::saveNote)
         }) {
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -45,7 +45,9 @@ fun AddEditScreen(
             DiaryNoteFields(
                 modifier = Modifier.padding(it),
                 title = uiState.title,
-                description = uiState.description
+                description = uiState.description,
+                onTitleChange = viewModel::updateTitle,
+                onDescriptionChange = viewModel::updateDescription
             )
         }
     }
@@ -99,7 +101,8 @@ fun DiaryNoteFields(
 @Composable
 fun AddEditTopAppBar(
     modifier: Modifier = Modifier,
-    onUpButtonClick: () -> Unit = {}
+    onUpButtonClick: () -> Unit = {},
+    onSaveClick: () -> Unit = {}
 ) {
     TopAppBar(title = {
 
@@ -114,7 +117,7 @@ fun AddEditTopAppBar(
         }
     }, actions = {
         IconButton(onClick = {
-
+            onSaveClick()
         }) {
             Icon(
                 imageVector = Icons.Default.Check,
