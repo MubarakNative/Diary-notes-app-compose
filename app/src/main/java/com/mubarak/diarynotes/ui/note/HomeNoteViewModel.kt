@@ -13,9 +13,4 @@ class HomeNoteViewModel @Inject constructor(
     private val noteRepository: NoteRepository
 ) : ViewModel() {
 
-    val getAllNotes = noteRepository.getAllNote().stateIn(
-        viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = emptyList()
-    )
 }

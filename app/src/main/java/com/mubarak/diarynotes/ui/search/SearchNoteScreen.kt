@@ -7,16 +7,22 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Blue
+import androidx.compose.ui.graphics.Color.Companion.Cyan
+import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mubarak.diarynotes.R
@@ -46,12 +52,17 @@ fun SearchNoteTopAppBar(
     onValueChange: (String) -> Unit = {},
     onUpButtonClick: () -> Unit = {}
 ) {
+    val brush = remember {
+        Brush.linearGradient(
+            colors = listOf<Color>(Cyan, Blue)
+        )
+    }
     var query by remember {
         mutableStateOf("")
     }
 
-    TextField(
-        modifier = Modifier
+    OutlinedTextField(
+        modifier = modifier
             .fillMaxWidth()
             .statusBarsPadding()
             .padding(16.dp),
@@ -75,7 +86,10 @@ fun SearchNoteTopAppBar(
             Text(
                 text = stringResource(R.string.search_your_note)
             )
-        }
+        },
+        textStyle = TextStyle(
+            brush = brush
+        )
     )
 }
 
