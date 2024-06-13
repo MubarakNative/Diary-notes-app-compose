@@ -3,8 +3,10 @@ package com.mubarak.diarynotes.ui.addoredit
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mubarak.diarynotes.AddEditDestination
 import com.mubarak.diarynotes.data.sources.NoteRepository
 import com.mubarak.diarynotes.utils.NoteStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,8 +23,11 @@ data class AddEditNoteUiState(
 
 @HiltViewModel
 class ActionNoteViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val noteRepository: NoteRepository
 ) : ViewModel() {
+
+    private val noteId: String? = savedStateHandle[AddEditDestination(null).noteId.toString()]
 
     private val _uiState = MutableStateFlow(AddEditNoteUiState())
     val uiState: StateFlow<AddEditNoteUiState> = _uiState.asStateFlow()
@@ -33,12 +38,6 @@ class ActionNoteViewModel @Inject constructor(
 
     var description by mutableStateOf("")
         private set
-
-    private var noteId: String? = null
-
-    fun setNote(noteId: String?) {
-        this.noteId = noteId
-    }
 
     fun saveNote() {
         if (title.isBlank() && description.isBlank()) {

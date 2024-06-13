@@ -29,18 +29,17 @@ import com.mubarak.diarynotes.ui.theme.DiaryTheme
 @Composable
 fun AddEditScreen(
     modifier: Modifier = Modifier,
-    noteId: String? = null,
     onUpButtonClick: () -> Unit = {},
     viewModel: ActionNoteViewModel = hiltViewModel()
 ) {
 
     DiaryTheme {
         Scaffold(modifier = modifier, topBar = {
-            AddEditTopAppBar(onUpButtonClick = onUpButtonClick, onSaveClick = viewModel::saveNote)
+            AddEditTopAppBar(
+                onUpButtonClick = { onUpButtonClick(); viewModel.saveNote() }
+            )
         }) {
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-            viewModel.setNote(noteId)
 
             DiaryNoteFields(
                 modifier = Modifier.padding(it),
@@ -101,8 +100,7 @@ fun DiaryNoteFields(
 @Composable
 fun AddEditTopAppBar(
     modifier: Modifier = Modifier,
-    onUpButtonClick: () -> Unit = {},
-    onSaveClick: () -> Unit = {}
+    onUpButtonClick: () -> Unit = {}
 ) {
     TopAppBar(title = {
 
@@ -113,15 +111,6 @@ fun AddEditTopAppBar(
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = stringResource(id = R.string.nav_back)
-            )
-        }
-    }, actions = {
-        IconButton(onClick = {
-            onSaveClick()
-        }) {
-            Icon(
-                imageVector = Icons.Default.Check,
-                contentDescription = stringResource(id = R.string.save)
             )
         }
     })

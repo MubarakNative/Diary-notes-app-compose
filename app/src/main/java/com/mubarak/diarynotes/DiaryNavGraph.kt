@@ -50,10 +50,10 @@ fun DiaryNavGraph(
                 navController.navigateUp()
             })
         }
-        composable<AddEditDestination> { entry ->
+        composable<AddEditDestination> {
             AddEditScreen(modifier = modifier, onUpButtonClick = {
                 navController.navigateUp()
-            }, noteId = entry.toRoute<AddEditDestination>().noteId)
+            })
         }
     }
 }
