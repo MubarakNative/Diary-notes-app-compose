@@ -49,7 +49,10 @@ fun DiaryHomeScreen(
             })
         }
     ) {
-        LazyDiaryNoteItems(noteItems = fakeNoteItem, modifier = Modifier.padding(it))
+
+        val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+
+        LazyDiaryNoteItems(noteItems = uiState.value.notes, modifier = Modifier.padding(it))
     }
 }
 
@@ -124,16 +127,5 @@ fun DiaryFab(
 fun DiaryAppPreview() {
     DiaryTheme {
         LazyDiaryNoteItems(noteItems = fakeNoteItem)
-    }
-}
-
-@Preview
-@Composable
-fun DiaryNavDrawerPreview() {
-    DiaryTheme {
-        DiaryHomeScreen(onDrawer = {},
-            onSearchActionClick = {},
-            onFabClick = {}
-        )
     }
 }
