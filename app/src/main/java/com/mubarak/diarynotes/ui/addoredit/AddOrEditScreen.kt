@@ -7,19 +7,23 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -30,14 +34,21 @@ import com.mubarak.diarynotes.ui.theme.DiaryTheme
 fun AddEditScreen(
     modifier: Modifier = Modifier,
     onUpButtonClick: () -> Unit = {},
+    navigateToHome: () -> Unit = {},
     viewModel: ActionNoteViewModel = hiltViewModel()
 ) {
-
+    val snackBarHostState = remember {
+        SnackbarHostState()
+    }
     DiaryTheme {
-        Scaffold(modifier = modifier, topBar = {
+        Scaffold(modifier = modifier, snackbarHost = {
+            SnackbarHost(hostState = snackBarHostState)
+        }, topBar = {
             AddEditTopAppBar(
-                onUpButtonClick = { onUpButtonClick(); viewModel.saveNote() }
+                onUpButtonClick = onUpButtonClick
             )
+        }, floatingActionButton = {
+           SaveFab(onFabClick = viewModel::saveNote)
         }) {
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -48,6 +59,22 @@ fun AddEditScreen(
                 onTitleChange = viewModel::updateTitle,
                 onDescriptionChange = viewModel::updateDescription
             )
+
+            LaunchedEffect(
+                uiState.navigateToHome
+            ) {
+                if (uiState.navigateToHome){
+                    navigateToHome()
+                }
+            }
+
+            if (uiState.message != null) {
+                val message = stringResource(id = uiState.message!!)
+                LaunchedEffect(uiState.message) {
+                    snackBarHostState.showSnackbar(message)
+                }
+            }
+
         }
     }
 }
@@ -96,6 +123,16 @@ fun DiaryNoteFields(
     }
 }
 
+@Composable
+fun SaveFab(modifier: Modifier = Modifier, onFabClick: () -> Unit) {
+    FloatingActionButton(onClick = onFabClick, modifier = modifier) {
+        Icon(
+            imageVector = Icons.Filled.Check,
+            contentDescription = stringResource(id = R.string.save)
+        )
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditTopAppBar(
@@ -105,21 +142,11 @@ fun AddEditTopAppBar(
     TopAppBar(title = {
 
     }, modifier = modifier, navigationIcon = {
-        IconButton(onClick = {
-            onUpButtonClick()
-        }) {
+        IconButton(onClick = onUpButtonClick) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = stringResource(id = R.string.nav_back)
             )
         }
     })
-}
-
-@Preview
-@Composable
-private fun AddEditScreenPreview() {
-    DiaryTheme {
-        AddEditScreen()
-    }
 }

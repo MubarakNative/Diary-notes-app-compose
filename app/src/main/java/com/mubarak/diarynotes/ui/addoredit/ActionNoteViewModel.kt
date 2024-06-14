@@ -7,17 +7,19 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mubarak.diarynotes.AddEditDestination
+import com.mubarak.diarynotes.R
 import com.mubarak.diarynotes.data.sources.NoteRepository
-import com.mubarak.diarynotes.utils.NoteStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class AddEditNoteUiState(
-    val noteType: NoteStatus = NoteStatus.ACTIVE
+    val message: Int? = null,
+    val navigateToHome: Boolean = false
     // TODO: add more fields like send a error msg to the user if field is empty, and more
 )
 
@@ -41,18 +43,21 @@ class ActionNoteViewModel @Inject constructor(
 
     fun saveNote() {
         if (title.isBlank() && description.isBlank()) {
-            _uiState.value = _uiState.value.copy(
-                // TODO: notify the user he miss the title and description field
-            )
+            _uiState.update {
+                it.copy(message = R.string.empty_note_message)
+            }
+            return
         }
 
         if (noteId == null) {
             createNote()
         }
-        return
     }
 
     private fun createNote() = viewModelScope.launch {
+        _uiState.update {
+            it.copy(navigateToHome = true)
+        }
         noteRepository.insertNote(
             title = title,
             description = description,

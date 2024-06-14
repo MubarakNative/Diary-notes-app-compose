@@ -1,12 +1,12 @@
 package com.mubarak.diarynotes
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
 import com.mubarak.diarynotes.ui.addoredit.AddEditScreen
 import com.mubarak.diarynotes.ui.archive.ArchiveScreen
 import com.mubarak.diarynotes.ui.deleted.DeletedNoteScreen
@@ -51,8 +51,15 @@ fun DiaryNavGraph(
             })
         }
         composable<AddEditDestination> {
-            AddEditScreen(modifier = modifier, onUpButtonClick = {
+            AddEditScreen(onUpButtonClick = {
+                /** Sometimes the up button is not working as intended in the beta version
+                 * of navigation compose the bug is already reported on issue tracker
+                 * TODO See: https://issuetracker.google.com/issues/347114499
+                 * */
                 navController.navigateUp()
+            }, navigateToHome = {
+                Log.d("SaveLi", "SavedClicked")
+                navController.navigate(DiaryHomeDestination)
             })
         }
     }
