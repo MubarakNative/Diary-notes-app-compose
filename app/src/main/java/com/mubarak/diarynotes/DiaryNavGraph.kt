@@ -1,6 +1,5 @@
 package com.mubarak.diarynotes
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -27,6 +26,9 @@ fun DiaryNavGraph(
             DiaryHomeScreen(
                 modifier = modifier,
                 onDrawer = { onDrawerClicked() },
+                onItemClick = { note ->
+                    navController.navigate(AddEditDestination(note.id))
+                },
                 onSearchActionClick = {
                     navController.navigate(SearchDestination)
                 },
@@ -58,7 +60,6 @@ fun DiaryNavGraph(
                  * */
                 navController.navigateUp()
             }, navigateToHome = {
-                Log.d("SaveLi", "SavedClicked")
                 navController.navigate(DiaryHomeDestination)
             })
         }

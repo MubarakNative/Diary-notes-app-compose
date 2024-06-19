@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mubarak.diarynotes.AddEditDestination
 import com.mubarak.diarynotes.R
 import com.mubarak.diarynotes.data.sources.NoteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +19,6 @@ import javax.inject.Inject
 data class AddEditNoteUiState(
     val message: Int? = null,
     val navigateToHome: Boolean = false
-    // TODO: add more fields like send a error msg to the user if field is empty, and more
 )
 
 @HiltViewModel
@@ -29,10 +27,16 @@ class ActionNoteViewModel @Inject constructor(
     private val noteRepository: NoteRepository
 ) : ViewModel() {
 
-    private val noteId: String? = savedStateHandle[AddEditDestination(null).noteId.toString()]
+    private val noteId: String? = savedStateHandle["noteId"]
 
     private val _uiState = MutableStateFlow(AddEditNoteUiState())
     val uiState: StateFlow<AddEditNoteUiState> = _uiState.asStateFlow()
+
+    init {
+        noteId?.let {
+            showNoteItem(noteId)
+        }
+    }
 
     // No outside of this class can't change the value
     var title by mutableStateOf("")
@@ -44,13 +48,30 @@ class ActionNoteViewModel @Inject constructor(
     fun saveNote() {
         if (title.isBlank() && description.isBlank()) {
             _uiState.update {
-                it.copy(message = R.string.empty_note_message)
+                it.copy(message = R.string.empty_note_message, navigateToHome = false)
             }
             return
         }
 
         if (noteId == null) {
             createNote()
+        } else {
+            updateNote()
+        }
+    }
+
+    private fun updateNote() = viewModelScope.launch {
+        _uiState.update {
+            it.copy(
+                navigateToHome = true
+            )
+        }
+        noteId?.let {
+            noteRepository.upsertNote(
+                noteId,
+                title,
+                description
+            )
         }
     }
 
@@ -72,4 +93,14 @@ class ActionNoteViewModel @Inject constructor(
         this.description = description
     }
 
+    private fun showNoteItem(noteId: String) {
+        viewModelScope.launch {
+            noteRepository.getNoteById(
+                noteId
+            ).let {
+                title = it.title
+                description = it.description
+            }
+        }
+    }
 }

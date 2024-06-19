@@ -2,7 +2,6 @@ package com.mubarak.diarynotes.ui.note
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -15,10 +14,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -34,8 +37,12 @@ fun DiaryHomeScreen(
     onDrawer: () -> Unit,
     onSearchActionClick: () -> Unit = {},
     onFabClick: () -> Unit,
+    onItemClick: (Note) -> Unit ={},
     viewModel: HomeNoteViewModel = hiltViewModel()
 ) {
+    val snackBarHostState = remember {
+        SnackbarHostState()
+    }
     Scaffold(
         topBar = {
             DiaryTopAppBar(
@@ -53,14 +60,26 @@ fun DiaryHomeScreen(
 
         val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
-        LazyDiaryNoteItems(noteItems = uiState.value.notes, modifier = Modifier.padding(it))
+        if (uiState.value.message != null) {
+            val message = stringResource(id = uiState.value.message!!)
+            LaunchedEffect(uiState.value.message) {
+                snackBarHostState.showSnackbar(message)
+            }
+        }
+
+        LazyDiaryNoteItems(
+            noteItems = uiState.value.notes,
+            onItemClick = onItemClick,
+            modifier = Modifier.padding(it)
+        )
     }
 }
 
 @Composable
 fun LazyDiaryNoteItems(
     modifier: Modifier = Modifier,
-    noteItems: List<Note>
+    noteItems: List<Note>,
+    onItemClick: (Note) -> Unit = {}
 ) {
     LazyColumn(
         modifier = modifier
@@ -68,7 +87,7 @@ fun LazyDiaryNoteItems(
         items(
             noteItems
         ) {
-            DiaryNoteItem(note = it)
+            DiaryNoteItem(note = it, onItemClick = onItemClick)
         }
     }
 
@@ -114,14 +133,13 @@ fun DiaryFab(
 ) {
     FloatingActionButton(onClick = {
         onFabClick()
-    }) {
+    }, modifier = modifier) {
         Icon(
             imageVector = Icons.Default.Add,
             contentDescription = stringResource(id = R.string.createNote)
         )
     }
 }
-
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable

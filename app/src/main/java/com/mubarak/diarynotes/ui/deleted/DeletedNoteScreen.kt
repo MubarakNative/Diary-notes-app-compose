@@ -40,11 +40,6 @@ fun DeletedNoteScreen(
     }
 }
 
-data class NoteItem(
-    val title: String,
-    val description: String
-)
-
 // TODO replace it with real room database
 val noteItems = listOf(
     Note(
