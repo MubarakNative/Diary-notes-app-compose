@@ -18,6 +18,7 @@ import javax.inject.Inject
 
 data class AddEditNoteUiState(
     val message: Int? = null,
+    val isNoteDeleted: Boolean = false,
     val navigateToHome: Boolean = false
 )
 
@@ -28,6 +29,8 @@ class ActionNoteViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val noteId: String? = savedStateHandle["noteId"]
+
+    private val isNoteDeleted= MutableStateFlow(false)
 
     private val _uiState = MutableStateFlow(AddEditNoteUiState())
     val uiState: StateFlow<AddEditNoteUiState> = _uiState.asStateFlow()
@@ -103,4 +106,11 @@ class ActionNoteViewModel @Inject constructor(
             }
         }
     }
+
+    fun deleteNote() = viewModelScope.launch {
+        noteId?.let {
+            noteRepository.deleteNoteById(noteId)
+        }
+    }
+
 }

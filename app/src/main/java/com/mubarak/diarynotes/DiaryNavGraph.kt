@@ -20,7 +20,7 @@ fun DiaryNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = DiaryHomeDestination
+        startDestination = DiaryHomeDestination()
     ) {
         composable<DiaryHomeDestination> {
             DiaryHomeScreen(
@@ -60,7 +60,7 @@ fun DiaryNavGraph(
                  * */
                 navController.navigateUp()
             }, navigateToHome = {
-                navController.navigate(DiaryHomeDestination)
+                navController.navigate(DiaryHomeDestination())
             })
         }
     }

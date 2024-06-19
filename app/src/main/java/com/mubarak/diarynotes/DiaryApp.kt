@@ -20,7 +20,7 @@ fun DiaryApp() {
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute =
-        navBackStackEntry?.destination?.route ?: DiaryHomeDestination
+        navBackStackEntry?.destination?.route ?: DiaryHomeDestination()
 
     ModalNavigationDrawer(
         drawerContent = {
@@ -36,7 +36,7 @@ fun DiaryApp() {
                     }
                 },
                 navigateToArchive = {
-                    navController.navigate(DiaryHomeDestination){
+                    navController.navigate(DiaryHomeDestination()){
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }

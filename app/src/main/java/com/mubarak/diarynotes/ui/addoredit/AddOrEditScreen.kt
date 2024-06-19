@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -45,10 +46,11 @@ fun AddEditScreen(
             SnackbarHost(hostState = snackBarHostState)
         }, topBar = {
             AddEditTopAppBar(
-                onUpButtonClick = onUpButtonClick
+                onUpButtonClick = onUpButtonClick,
+                actionDelete = viewModel::deleteNote
             )
         }, floatingActionButton = {
-           SaveFab(onFabClick = viewModel::saveNote)
+            SaveFab(onFabClick = viewModel::saveNote)
         }) {
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -63,7 +65,7 @@ fun AddEditScreen(
             LaunchedEffect(
                 uiState.navigateToHome
             ) {
-                if (uiState.navigateToHome){
+                if (uiState.navigateToHome) {
                     navigateToHome()
                 }
             }
@@ -137,7 +139,8 @@ fun SaveFab(modifier: Modifier = Modifier, onFabClick: () -> Unit) {
 @Composable
 fun AddEditTopAppBar(
     modifier: Modifier = Modifier,
-    onUpButtonClick: () -> Unit = {}
+    onUpButtonClick: () -> Unit = {},
+    actionDelete: () -> Unit = {}
 ) {
     TopAppBar(title = {
 
@@ -146,6 +149,13 @@ fun AddEditTopAppBar(
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = stringResource(id = R.string.nav_back)
+            )
+        }
+    }, actions = {
+        IconButton(onClick = actionDelete) {
+            Icon(
+                imageVector = Icons.Default.Delete,
+                contentDescription = stringResource(id = R.string.delete_note)
             )
         }
     })

@@ -12,5 +12,7 @@
     <string name="deleted">Deleted</string>
     <string name="diary">Diary</string>
     <string name="save">Save note</string>
-    <string name="empty_note_message">Empty note discarded!</string>
+    <string name="empty_note_message">Fields can\'t be empty!</string>
+    <string name="delete_note">Delete note</string>
+    <string name="note_deleted">Note deleted successfully!</string>
 </resources>

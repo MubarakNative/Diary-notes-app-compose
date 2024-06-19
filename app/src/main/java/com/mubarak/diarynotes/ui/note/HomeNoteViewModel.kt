@@ -14,6 +14,7 @@ import javax.inject.Inject
 
 data class HomeNoteUiState(
     val notes: List<Note> = emptyList(),
+    val message: Int? = null
     // TODO: later we add more features like sorting, filtering etc.
 )
 
@@ -23,6 +24,8 @@ class HomeNoteViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
+    private val message: Int? = savedStateHandle["message"]
+
     private val _uiState = MutableStateFlow(HomeNoteUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -30,6 +33,11 @@ class HomeNoteViewModel @Inject constructor(
         viewModelScope.launch {
             noteRepository.getAllNote().collect {
                 _uiState.value = HomeNoteUiState(it)
+            }
+            message?.let {
+                _uiState.update {
+                    it.copy(message = message)
+                }
             }
         }
     }
