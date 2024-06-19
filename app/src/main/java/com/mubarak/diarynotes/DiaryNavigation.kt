@@ -3,9 +3,7 @@ package com.mubarak.diarynotes
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class DiaryHomeDestination(
-    val message: Int = 0
-)
+object DiaryHomeDestination
 
 @Serializable
 object ArchiveDestination

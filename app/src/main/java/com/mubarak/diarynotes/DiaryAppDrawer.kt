@@ -35,7 +35,7 @@ fun DiaryAppDrawer(
             label = {
                 Text(text = stringResource(R.string.notes))
             },
-            selected = currentDestination == DiaryHomeDestination()::class.qualifiedName,
+            selected = currentDestination == DiaryHomeDestination::class.qualifiedName,
             onClick = {
                 navigateToArchive(); closeDrawer()
             },
@@ -89,7 +89,7 @@ private fun NavHeaderPreview() {
             navigateToNotes = {},
             navigateToDeleted = {},
             closeDrawer = {},
-            currentDestination = DiaryHomeDestination().toString()
+            currentDestination = DiaryHomeDestination.toString()
         )
     }
 }
