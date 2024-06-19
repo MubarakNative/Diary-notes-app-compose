@@ -1,5 +1,6 @@
 package com.mubarak.diarynotes
 
+import android.util.Log
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.rememberDrawerState
@@ -20,7 +21,7 @@ fun DiaryApp() {
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute =
-        navBackStackEntry?.destination?.route ?: DiaryHomeDestination()
+        navBackStackEntry?.destination?.route ?: DiaryHomeDestination
 
     ModalNavigationDrawer(
         drawerContent = {
@@ -36,7 +37,7 @@ fun DiaryApp() {
                     }
                 },
                 navigateToArchive = {
-                    navController.navigate(DiaryHomeDestination()){
+                    navController.navigate(DiaryHomeDestination) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
@@ -46,7 +47,7 @@ fun DiaryApp() {
                 },
 
                 navigateToDeleted = {
-                    navController.navigate(DeletedDestination){
+                    navController.navigate(DeletedDestination) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
@@ -61,6 +62,9 @@ fun DiaryApp() {
                 },
             )
         },
+        gesturesEnabled = currentRoute == DiaryHomeDestination::class.qualifiedName
+                || currentRoute == ArchiveDestination::class.qualifiedName
+                || currentRoute == DeletedDestination::class.qualifiedName,
         drawerState = drawerState
     ) { // container for the app content
         DiaryNavGraph(navController = navController) {
