@@ -3,7 +3,9 @@ package com.mubarak.diarynotes
 import kotlinx.serialization.Serializable
 
 @Serializable
-object DiaryHomeDestination
+data class DiaryHomeDestination(
+    val message: Int = 0
+)
 
 @Serializable
 object ArchiveDestination
