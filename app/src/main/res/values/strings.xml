@@ -12,4 +12,5 @@
     <string name="deleted">Deleted</string>
     <string name="diary">Diary</string>
     <string name="save">Save note</string>
+    <string name="empty_note_message">Empty note discarded!</string>
 </resources>

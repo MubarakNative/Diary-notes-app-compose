@@ -20,14 +20,14 @@ import com.mubarak.diarynotes.ui.theme.DiaryTheme
 fun DiaryNoteItem(
     modifier: Modifier = Modifier,
     note: Note,
-    onItemClick: () -> Unit = {},
+    onItemClick: (Note) -> Unit = {},
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
             .padding(8.dp)
             .clickable(onClick = {
-                onItemClick()
+                onItemClick(note)
             }),
     )
     {
