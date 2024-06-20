@@ -1,5 +1,8 @@
 package com.mubarak.diarynotes.ui.addoredit
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -31,11 +34,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mubarak.diarynotes.R
 import com.mubarak.diarynotes.ui.theme.DiaryTheme
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun AddEditScreen(
+fun SharedTransitionScope.AddEditScreen(
     modifier: Modifier = Modifier,
     onUpButtonClick: () -> Unit = {},
     navigateToHome: () -> Unit = {},
+    animatedVisibilityScope: AnimatedVisibilityScope,
     viewModel: ActionNoteViewModel = hiltViewModel()
 ) {
     val snackBarHostState = remember {
@@ -59,6 +64,7 @@ fun AddEditScreen(
                 title = viewModel.title,
                 description = viewModel.description,
                 onTitleChange = viewModel::updateTitle,
+                animatedVisibilityScope = animatedVisibilityScope,
                 onDescriptionChange = viewModel::updateDescription
             )
 
@@ -81,48 +87,67 @@ fun AddEditScreen(
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun DiaryNoteFields(
+fun SharedTransitionScope.DiaryNoteFields(
     modifier: Modifier = Modifier,
     title: String,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     description: String,
     onTitleChange: (String) -> Unit = {},
     onDescriptionChange: (String) -> Unit = {}
 ) {
 
-    Column(modifier = modifier) {
-        val textFieldColour = TextFieldDefaults.colors(
-            unfocusedContainerColor = Color.Transparent,
-            focusedContainerColor = Color.Transparent,
-        )
-        TextField(
-            value = title,
-            onValueChange = {
-                onTitleChange(it)
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            placeholder = {
-                Text(text = stringResource(id = R.string.title))
-            },
-            colors = textFieldColour
-        )
+        Column(modifier = modifier) {
+            val textFieldColour = TextFieldDefaults.colors(
+                unfocusedContainerColor = Color.Transparent,
+                focusedContainerColor = Color.Transparent,
+            )
+            TextField(
+                value = title,
+                onValueChange = {
+                    onTitleChange(it)
+                },
+                modifier = Modifier
+                    .sharedBounds(
+                        sharedContentState = rememberSharedContentState(key = "title:${title}"),
+                        animatedVisibilityScope = animatedVisibilityScope
+                    )
+                    /*.sharedElement(
+                        rememberSharedContentState(key = "title:${title}"),
+                        animatedVisibilityScope = animatedVisibilityScope
+                    )*/
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                placeholder = {
+                    Text(text = stringResource(id = R.string.title))
+                },
+                colors = textFieldColour
+            )
 
-        TextField(
-            value = description,
-            onValueChange = {
-                onDescriptionChange(it)
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            placeholder = {
-                Text(text = stringResource(R.string.description))
-            },
-            colors = textFieldColour
-        )
-    }
+            TextField(
+                value = description,
+                onValueChange = {
+                    onDescriptionChange(it)
+                },
+                modifier = Modifier
+                    .sharedBounds(
+                        sharedContentState = rememberSharedContentState(key = "description:${description}"),
+                        animatedVisibilityScope = animatedVisibilityScope
+                    )
+                   /* .sharedElement(
+                        rememberSharedContentState(key = "description:${description}"),
+                        animatedVisibilityScope = animatedVisibilityScope
+                    )*/
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                placeholder = {
+                    Text(text = stringResource(R.string.description))
+                },
+                colors = textFieldColour
+            )
+        }
+
 }
 
 @Composable
