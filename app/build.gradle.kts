@@ -64,6 +64,9 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    // Compose Animation
+    implementation("androidx.compose.animation:animation:1.7.0-beta03")
+
     // Compose Navigation
     implementation(libs.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
@@ -122,5 +125,5 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // LeakCanary (Debug Features)
-    debugImplementation(libs.leakcanary.android)
+    //debugImplementation(libs.leakcanary.android) Todo: uncomment when implement complex business logic
 }

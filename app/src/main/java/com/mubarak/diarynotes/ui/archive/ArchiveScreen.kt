@@ -68,7 +68,7 @@ fun LazyDiaryNoteItems(
         items(
             noteItems
         ) {
-            DiaryNoteItem(note = it)
+            //DiaryNoteItem(note = it)
         }
     }
 
