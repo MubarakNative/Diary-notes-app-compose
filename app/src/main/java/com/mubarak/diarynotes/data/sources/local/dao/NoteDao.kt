@@ -24,6 +24,13 @@ interface NoteDao {
     @Query("SELECT * FROM note ORDER BY Title DESC")
     fun getAllNotes(): Flow<List<Note>>
 
+    /** Unfortunately, We can't use full-text-search because we use String as a id for our note
+     *  but fts 'rowId' doesn't support string see: TODO: https://developer.android.com/training/data-storage/room/defining-data#fts
+     * */
+
+    @Query("SELECT * FROM note WHERE Title LIKE '%' || :query || '%' or Description LIKE '%' || :query || '%'")
+    fun getNoteBySearch(query: String): Flow<List<Note>>
+
     @Query("DELETE FROM note WHERE note_id = :noteId")
     suspend fun deleteNoteById(noteId: String)
 

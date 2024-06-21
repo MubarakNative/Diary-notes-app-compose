@@ -1,8 +1,9 @@
 package com.mubarak.diarynotes.ui.deleted
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -14,16 +15,17 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.mubarak.diarynotes.R
 import com.mubarak.diarynotes.data.sources.local.model.Note
-import com.mubarak.diarynotes.ui.note.DiaryNoteItem
+import com.mubarak.diarynotes.ui.search.LazyDiaryNoteItems
 import com.mubarak.diarynotes.ui.theme.DiaryTheme
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun DeletedNoteScreen(
+fun SharedTransitionScope.DeletedNoteScreen(
     modifier: Modifier = Modifier,
-    onMenuClick: () -> Unit
+    onMenuClick: () -> Unit,
+    animatedVisibilityScope: AnimatedVisibilityScope
 ) {
 
     DiaryTheme {
@@ -34,7 +36,8 @@ fun DeletedNoteScreen(
         }) {
             LazyDiaryNoteItems(
                 modifier = Modifier.padding(it),
-                noteItems = noteItems
+                noteItems = noteItems,
+                animatedVisibilityScope
             )
         }
     }
@@ -59,23 +62,6 @@ val noteItems = listOf(
     )
 )
 
-@Composable
-fun LazyDiaryNoteItems(
-    modifier: Modifier = Modifier,
-    noteItems: List<Note>
-) {
-    LazyColumn(
-        modifier = modifier
-    ) {
-        items(
-            noteItems
-        ) {
-            //DiaryNoteItem(note = it)
-        }
-    }
-}
-
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DeletedNoteTopAppBar(modifier: Modifier = Modifier, onMenuClick: () -> Unit) {
@@ -90,12 +76,4 @@ fun DeletedNoteTopAppBar(modifier: Modifier = Modifier, onMenuClick: () -> Unit)
             )
         }
     })
-}
-
-@Preview
-@Composable
-private fun AddEditScreenPreview() {
-    DiaryTheme {
-        DeletedNoteScreen {}
-    }
 }
