@@ -24,53 +24,56 @@ fun DiaryNavGraph(
 ) {
 
     SharedTransitionLayout {
-            NavHost(
-                navController = navController,
-                startDestination = DiaryHomeDestination
-            ) {
-                composable<DiaryHomeDestination> {
-                    DiaryHomeScreen(
-                        modifier = modifier,
-                        onDrawer = { onDrawerClicked() },
-                        onItemClick = { note ->
-                            navController.navigate(AddEditDestination(note.id))
-                        },
-                        onSearchActionClick = {
-                            navController.navigate(SearchDestination)
-                        },
-                        animatedVisibilityScope = this,
-                        onFabClick = {
-                            navController.navigate(AddEditDestination(null))
-                        }
-                    )
-                }
-                composable<ArchiveDestination> {
-                    ArchiveScreen {
-                        onDrawerClicked()
+        NavHost(
+            navController = navController,
+            startDestination = DiaryHomeDestination
+        ) {
+            composable<DiaryHomeDestination> {
+                DiaryHomeScreen(
+                    modifier = modifier,
+                    onDrawer = { onDrawerClicked() },
+                    onItemClick = { note ->
+                        navController.navigate(AddEditDestination(note.id))
+                    },
+                    onSearchActionClick = {
+                        navController.navigate(SearchDestination)
+                    },
+                    animatedVisibilityScope = this,
+                    onFabClick = {
+                        navController.navigate(AddEditDestination(null))
                     }
-                }
-                composable<DeletedDestination> {
-                    DeletedNoteScreen {
-                        onDrawerClicked()
-                    }
-                }
-                composable<SearchDestination> {
-                    SearchNoteScreen(modifier = modifier, onUpButtonClick = {
-                        navController.navigateUp()
-                    })
-                }
-                composable<AddEditDestination> {
-                    AddEditScreen(onUpButtonClick = {
-                        /** Sometimes the up button is not working as intended in the beta version
-                         * of navigation compose the bug is already reported on issue tracker
-                         * TODO See: https://issuetracker.google.com/issues/347114499
-                         * */
-                        navController.navigateUp()
-                    }, navigateToHome = {
-                        navController.navigate(DiaryHomeDestination)
-                    }, animatedVisibilityScope = this)
+                )
+            }
+            composable<ArchiveDestination> {
+                ArchiveScreen {
+                    onDrawerClicked()
                 }
             }
+            composable<DeletedDestination> {
+                DeletedNoteScreen(
+                    animatedVisibilityScope = this,
+                    onMenuClick = {
+                        onDrawerClicked()
+                    }
+                )
+            }
+            composable<SearchDestination> {
+                SearchNoteScreen(modifier = modifier, onUpButtonClick = {
+                    navController.navigateUp()
+                }, animatedVisibilityScope = this)
+            }
+            composable<AddEditDestination> {
+                AddEditScreen(onUpButtonClick = {
+                    /** Sometimes the up button is not working as intended in the beta version
+                     * of navigation compose the bug is already reported on issue tracker
+                     * TODO See: https://issuetracker.google.com/issues/347114499
+                     * */
+                    navController.navigateUp()
+                }, navigateToHome = {
+                    navController.navigate(DiaryHomeDestination)
+                }, animatedVisibilityScope = this)
+            }
+        }
 
 
     }

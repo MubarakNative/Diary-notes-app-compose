@@ -34,7 +34,7 @@ import com.mubarak.diarynotes.ui.theme.DiaryTheme
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun SharedTransitionScope.DiaryHomeScreen(
+fun SharedTransitionScope.DiaryHomeScreen( // TODO: Replace this with compositionLocal for pass arguments on deeply nested hierarchy
     modifier: Modifier = Modifier,
     onDrawer: () -> Unit,
     onSearchActionClick: () -> Unit = {},
@@ -148,13 +148,5 @@ fun DiaryFab(
             imageVector = Icons.Default.Add,
             contentDescription = stringResource(id = R.string.createNote)
         )
-    }
-}
-
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun DiaryAppPreview() {
-    DiaryTheme {
-        // LazyDiaryNoteItems(noteItems = fakeNoteItem)
     }
 }

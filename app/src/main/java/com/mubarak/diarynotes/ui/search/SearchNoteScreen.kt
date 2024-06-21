@@ -1,8 +1,13 @@
 package com.mubarak.diarynotes.ui.search
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
@@ -20,30 +25,63 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.graphics.Color.Companion.Cyan
-import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mubarak.diarynotes.R
-import com.mubarak.diarynotes.ui.deleted.LazyDiaryNoteItems
-import com.mubarak.diarynotes.ui.deleted.noteItems
+import com.mubarak.diarynotes.data.sources.local.model.Note
+import com.mubarak.diarynotes.ui.note.DiaryNoteItem
 import com.mubarak.diarynotes.ui.theme.DiaryTheme
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun SearchNoteScreen(modifier: Modifier = Modifier, onUpButtonClick: () -> Unit = {}) {
+fun SharedTransitionScope.SearchNoteScreen(
+    modifier: Modifier = Modifier,
+    onUpButtonClick: () -> Unit = {},
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    viewModel: SearchNoteViewModel = hiltViewModel()
+) {
+
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     DiaryTheme {
         Scaffold(modifier = modifier, topBar = {
             SearchNoteTopAppBar(modifier = modifier, onUpButtonClick = {
                 onUpButtonClick()
-            })
+            }, onValueChange = viewModel::searchNote)
         }) {
             LazyDiaryNoteItems(
                 modifier = Modifier.padding(it),
-                noteItems = noteItems
+                noteItems = uiState.value.notes,
+                animatedVisibilityScope = animatedVisibilityScope
             )
         }
     }
+}
+
+@OptIn(ExperimentalSharedTransitionApi::class)
+@Composable
+fun SharedTransitionScope.LazyDiaryNoteItems(
+    modifier: Modifier = Modifier,
+    noteItems: List<Note>,
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    onItemClick: (Note) -> Unit = {}
+) {
+    LazyColumn(
+        modifier = modifier
+    ) {
+        items(
+            noteItems
+        ) {
+            DiaryNoteItem(
+                note = it,
+                onItemClick = onItemClick,
+                animatedVisibilityScope = animatedVisibilityScope
+            )
+        }
+    }
+
 }
 
 @Composable
@@ -91,12 +129,4 @@ fun SearchNoteTopAppBar(
             brush = brush
         )
     )
-}
-
-@Preview
-@Composable
-private fun SearchNoteScreenPreview() {
-    DiaryTheme {
-        SearchNoteScreen()
-    }
 }
