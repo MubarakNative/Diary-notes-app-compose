@@ -1,8 +1,5 @@
 package com.mubarak.diarynotes.ui.deleted
 
-import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -17,15 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.mubarak.diarynotes.R
 import com.mubarak.diarynotes.data.sources.local.model.Note
-import com.mubarak.diarynotes.ui.search.LazyDiaryNoteItems
+import com.mubarak.diarynotes.ui.archive.LazyDiaryNoteItems
 import com.mubarak.diarynotes.ui.theme.DiaryTheme
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun SharedTransitionScope.DeletedNoteScreen(
+fun DeletedNoteScreen(
     modifier: Modifier = Modifier,
     onMenuClick: () -> Unit,
-    animatedVisibilityScope: AnimatedVisibilityScope
 ) {
 
     DiaryTheme {
@@ -37,7 +32,6 @@ fun SharedTransitionScope.DeletedNoteScreen(
             LazyDiaryNoteItems(
                 modifier = Modifier.padding(it),
                 noteItems = noteItems,
-                animatedVisibilityScope
             )
         }
     }

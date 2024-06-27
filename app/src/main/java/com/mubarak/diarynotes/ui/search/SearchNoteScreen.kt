@@ -32,12 +32,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mubarak.diarynotes.R
 import com.mubarak.diarynotes.data.sources.local.model.Note
+import com.mubarak.diarynotes.ui.archive.LazyDiaryNoteItems
 import com.mubarak.diarynotes.ui.note.DiaryNoteItem
 import com.mubarak.diarynotes.ui.theme.DiaryTheme
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun SharedTransitionScope.SearchNoteScreen(
+fun SearchNoteScreen(
     modifier: Modifier = Modifier,
     onUpButtonClick: () -> Unit = {},
     animatedVisibilityScope: AnimatedVisibilityScope,
@@ -54,7 +55,6 @@ fun SharedTransitionScope.SearchNoteScreen(
             LazyDiaryNoteItems(
                 modifier = Modifier.padding(it),
                 noteItems = uiState.value.notes,
-                animatedVisibilityScope = animatedVisibilityScope
             )
         }
     }
@@ -76,8 +76,7 @@ fun SharedTransitionScope.LazyDiaryNoteItems(
         ) {
             DiaryNoteItem(
                 note = it,
-                onItemClick = onItemClick,
-                animatedVisibilityScope = animatedVisibilityScope
+                onItemClick = onItemClick
             )
         }
     }

@@ -1,9 +1,5 @@
 package com.mubarak.diarynotes.ui.note
 
-import android.content.res.Configuration
-import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -25,22 +21,18 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mubarak.diarynotes.R
 import com.mubarak.diarynotes.data.sources.local.model.Note
-import com.mubarak.diarynotes.ui.theme.DiaryTheme
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun SharedTransitionScope.DiaryHomeScreen( // TODO: Replace this with compositionLocal for pass arguments on deeply nested hierarchy
+fun DiaryHomeScreen( // TODO: Replace this with compositionLocal for pass arguments on deeply nested hierarchy
     modifier: Modifier = Modifier,
     onDrawer: () -> Unit,
     onSearchActionClick: () -> Unit = {},
     onFabClick: () -> Unit,
     onItemClick: (Note) -> Unit = {},
-    animatedVisibilityScope: AnimatedVisibilityScope,
     viewModel: HomeNoteViewModel = hiltViewModel()
 ) {
     val snackBarHostState = remember {
@@ -73,18 +65,15 @@ fun SharedTransitionScope.DiaryHomeScreen( // TODO: Replace this with compositio
         LazyDiaryNoteItems(
             noteItems = uiState.value.notes,
             onItemClick = onItemClick,
-            animatedVisibilityScope = animatedVisibilityScope,
             modifier = Modifier.padding(it)
         )
     }
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun SharedTransitionScope.LazyDiaryNoteItems(
+fun LazyDiaryNoteItems(
     modifier: Modifier = Modifier,
     noteItems: List<Note>,
-    animatedVisibilityScope: AnimatedVisibilityScope,
     onItemClick: (Note) -> Unit = {}
 ) {
     LazyColumn(
@@ -96,7 +85,6 @@ fun SharedTransitionScope.LazyDiaryNoteItems(
             DiaryNoteItem(
                 note = it,
                 onItemClick = onItemClick,
-                animatedVisibilityScope = animatedVisibilityScope
             )
         }
     }
