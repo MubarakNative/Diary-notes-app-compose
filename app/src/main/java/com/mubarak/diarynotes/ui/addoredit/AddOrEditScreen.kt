@@ -1,11 +1,10 @@
 package com.mubarak.diarynotes.ui.addoredit
 
-import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
@@ -28,19 +27,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mubarak.diarynotes.R
 import com.mubarak.diarynotes.ui.theme.DiaryTheme
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun SharedTransitionScope.AddEditScreen(
+fun AddEditScreen(
     modifier: Modifier = Modifier,
     onUpButtonClick: () -> Unit = {},
     navigateToHome: () -> Unit = {},
-    animatedVisibilityScope: AnimatedVisibilityScope,
     viewModel: ActionNoteViewModel = hiltViewModel()
 ) {
     val snackBarHostState = remember {
@@ -64,7 +63,6 @@ fun SharedTransitionScope.AddEditScreen(
                 title = viewModel.title,
                 description = viewModel.description,
                 onTitleChange = viewModel::updateTitle,
-                animatedVisibilityScope = animatedVisibilityScope,
                 onDescriptionChange = viewModel::updateDescription
             )
 
@@ -87,21 +85,24 @@ fun SharedTransitionScope.AddEditScreen(
     }
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun SharedTransitionScope.DiaryNoteFields(
+fun DiaryNoteFields(
     modifier: Modifier = Modifier,
     title: String,
-    animatedVisibilityScope: AnimatedVisibilityScope,
     description: String,
     onTitleChange: (String) -> Unit = {},
     onDescriptionChange: (String) -> Unit = {}
 ) {
 
-        Column(modifier = modifier) {
+        Column(modifier = modifier.verticalScroll(rememberScrollState())) {
+
             val textFieldColour = TextFieldDefaults.colors(
                 unfocusedContainerColor = Color.Transparent,
                 focusedContainerColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent
             )
             TextField(
                 value = title,
@@ -109,20 +110,13 @@ fun SharedTransitionScope.DiaryNoteFields(
                     onTitleChange(it)
                 },
                 modifier = Modifier
-                    .sharedBounds(
-                        sharedContentState = rememberSharedContentState(key = "title:${title}"),
-                        animatedVisibilityScope = animatedVisibilityScope
-                    )
-                    /*.sharedElement(
-                        rememberSharedContentState(key = "title:${title}"),
-                        animatedVisibilityScope = animatedVisibilityScope
-                    )*/
                     .fillMaxWidth()
                     .padding(16.dp),
                 placeholder = {
-                    Text(text = stringResource(id = R.string.title))
+                    Text(text = stringResource(id = R.string.title), style = TextStyle.Default.copy(fontSize = 24.sp))
                 },
-                colors = textFieldColour
+                textStyle = TextStyle.Default.copy(fontSize = 24.sp),
+               colors = textFieldColour
             )
 
             TextField(
@@ -131,19 +125,12 @@ fun SharedTransitionScope.DiaryNoteFields(
                     onDescriptionChange(it)
                 },
                 modifier = Modifier
-                    .sharedBounds(
-                        sharedContentState = rememberSharedContentState(key = "description:${description}"),
-                        animatedVisibilityScope = animatedVisibilityScope
-                    )
-                   /* .sharedElement(
-                        rememberSharedContentState(key = "description:${description}"),
-                        animatedVisibilityScope = animatedVisibilityScope
-                    )*/
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
                 placeholder = {
-                    Text(text = stringResource(R.string.description))
+                    Text(text = stringResource(R.string.description), style = TextStyle.Default.copy(fontSize = 17.sp))
                 },
+                textStyle = TextStyle.Default.copy(fontSize = 17.sp),
                 colors = textFieldColour
             )
         }

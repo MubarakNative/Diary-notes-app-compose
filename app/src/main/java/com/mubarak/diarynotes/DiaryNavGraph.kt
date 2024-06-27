@@ -1,7 +1,5 @@
 package com.mubarak.diarynotes
 
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -14,8 +12,6 @@ import com.mubarak.diarynotes.ui.deleted.DeletedNoteScreen
 import com.mubarak.diarynotes.ui.note.DiaryHomeScreen
 import com.mubarak.diarynotes.ui.search.SearchNoteScreen
 
-
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun DiaryNavGraph(
     modifier: Modifier = Modifier,
@@ -23,7 +19,6 @@ fun DiaryNavGraph(
     onDrawerClicked: () -> Unit,
 ) {
 
-    SharedTransitionLayout {
         NavHost(
             navController = navController,
             startDestination = DiaryHomeDestination
@@ -38,7 +33,6 @@ fun DiaryNavGraph(
                     onSearchActionClick = {
                         navController.navigate(SearchDestination)
                     },
-                    animatedVisibilityScope = this,
                     onFabClick = {
                         navController.navigate(AddEditDestination(null))
                     }
@@ -51,7 +45,6 @@ fun DiaryNavGraph(
             }
             composable<DeletedDestination> {
                 DeletedNoteScreen(
-                    animatedVisibilityScope = this,
                     onMenuClick = {
                         onDrawerClicked()
                     }
@@ -71,12 +64,9 @@ fun DiaryNavGraph(
                     navController.navigateUp()
                 }, navigateToHome = {
                     navController.navigate(DiaryHomeDestination)
-                }, animatedVisibilityScope = this)
+                })
             }
         }
-
-
-    }
 }
 
 
