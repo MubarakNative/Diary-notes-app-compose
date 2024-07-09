@@ -1,6 +1,5 @@
 package com.mubarak.diarynotes.data.sources
 
-
 import com.mubarak.diarynotes.data.sources.local.NoteDatabase
 import com.mubarak.diarynotes.data.sources.local.model.Note
 import kotlinx.coroutines.CoroutineDispatcher

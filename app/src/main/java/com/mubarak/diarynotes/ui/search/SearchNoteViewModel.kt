@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,9 +31,10 @@ class SearchNoteViewModel @Inject constructor(
     private var searchJob: Job? = null
 
     fun searchNote(searchQuery: String){
+        val filteredQuery = SearchQueryFilter.filterQuery(searchQuery)
         searchJob = viewModelScope.launch {
             delay(150)
-            noteRepository.getNoteBySearch(searchQuery).catch {
+            noteRepository.getNoteBySearch(filteredQuery).catch {
                 emptyList<Note>()
             }.collect{ notes ->
                 _uiState.update {
