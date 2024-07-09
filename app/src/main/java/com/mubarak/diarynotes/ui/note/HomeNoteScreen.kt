@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -27,7 +28,7 @@ import com.mubarak.diarynotes.R
 import com.mubarak.diarynotes.data.sources.local.model.Note
 
 @Composable
-fun DiaryHomeScreen( // TODO: Replace this with compositionLocal for pass arguments on deeply nested hierarchy
+fun DiaryHomeScreen(
     modifier: Modifier = Modifier,
     onDrawer: () -> Unit,
     onSearchActionClick: () -> Unit = {},
@@ -53,17 +54,17 @@ fun DiaryHomeScreen( // TODO: Replace this with compositionLocal for pass argume
         }
     ) {
 
-        val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-        if (uiState.value.message != null) {
-            val message = stringResource(id = uiState.value.message!!)
-            LaunchedEffect(uiState.value.message) {
+        if (uiState.message != null) {
+            val message = stringResource(id = uiState.message!!)
+            LaunchedEffect(uiState.message) {
                 snackBarHostState.showSnackbar(message)
             }
         }
 
         LazyDiaryNoteItems(
-            noteItems = uiState.value.notes,
+            noteItems = uiState.notes,
             onItemClick = onItemClick,
             modifier = Modifier.padding(it)
         )

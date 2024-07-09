@@ -1,13 +1,8 @@
 package com.mubarak.diarynotes.ui.search
 
-import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
@@ -31,17 +26,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mubarak.diarynotes.R
-import com.mubarak.diarynotes.data.sources.local.model.Note
 import com.mubarak.diarynotes.ui.archive.LazyDiaryNoteItems
-import com.mubarak.diarynotes.ui.note.DiaryNoteItem
 import com.mubarak.diarynotes.ui.theme.DiaryTheme
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SearchNoteScreen(
     modifier: Modifier = Modifier,
     onUpButtonClick: () -> Unit = {},
-    animatedVisibilityScope: AnimatedVisibilityScope,
     viewModel: SearchNoteViewModel = hiltViewModel()
 ) {
 
@@ -60,28 +51,6 @@ fun SearchNoteScreen(
     }
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
-@Composable
-fun SharedTransitionScope.LazyDiaryNoteItems(
-    modifier: Modifier = Modifier,
-    noteItems: List<Note>,
-    animatedVisibilityScope: AnimatedVisibilityScope,
-    onItemClick: (Note) -> Unit = {}
-) {
-    LazyColumn(
-        modifier = modifier
-    ) {
-        items(
-            noteItems
-        ) {
-            DiaryNoteItem(
-                note = it,
-                onItemClick = onItemClick
-            )
-        }
-    }
-
-}
 
 @Composable
 fun SearchNoteTopAppBar(
